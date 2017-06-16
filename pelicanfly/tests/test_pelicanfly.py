@@ -35,8 +35,13 @@ class TestPelicanfly(unittest.TestCase):
         pass
 
     def test_add_markdown_plugin(self):
-        added = any([isinstance(x,FontAwesomeExtension)
-            for x in self.pelican.settings['MD_EXTENSIONS']])
+        if 'MD_EXTENSIONS' in self.pelican.settings.keys():
+            # pelican 3.6.3 and earlier
+            added = any([isinstance(x,FontAwesomeExtension)
+                for x in self.pelican.settings['MD_EXTENSIONS']])
+        else:
+            added = any([isinstance(x,FontAwesomeExtension)
+                for x in self.pelican.settings['MARKDOWN']['extensions']])
         self.assertTrue(added)
 
     def test_add_static_paths(self):
